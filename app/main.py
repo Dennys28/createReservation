@@ -4,10 +4,11 @@ from database import SessionLocal, init_db
 from models import Reservation
 from schemas import ReservationCreate, ReservationResponse
 
-app = FastAPI()
-
 # Inicializar la base de datos
 init_db()
+
+# Crear instancia de FastAPI
+app = FastAPI(title="Reservation Service", description="Microservicio para la gestión de reservas", version="1.0")
 
 
 # Dependencia para obtener la sesión de la base de datos
@@ -17,6 +18,11 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+@app.get("/")
+def root():
+    return {"message": "Reservation Service is running"}
 
 
 @app.post("/create_reservation/", response_model=ReservationResponse)
